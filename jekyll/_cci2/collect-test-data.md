@@ -16,6 +16,7 @@ sectionTags:
     - "#karma"
     - "#ava-for-node"
     - "#eslint"
+    - "#cucumber-for-node"
   ruby:
     - "#rspec"
     - "#minitest"
@@ -135,6 +136,7 @@ JavaScript | Mocha | [mocha-junit-reporter](https://www.npmjs.com/package/mocha-
 JavaScript | Karma | [karma-junit-reporter](https://www.npmjs.com/package/karma-junit-reporter) | [example]({{site.baseurl}}/collect-test-data/#karma)
 JavaScript | Ava | [tap-xunit](https://github.com/aghassemi/tap-xunit) | [example]({{site.baseurl}}/collect-test-data/#ava-for-node)
 JavaScript | ESLint | [JUnit formatter](http://eslint.org/docs/user-guide/formatters/#junit) | [example]({{site.baseurl}}/collect-test-data/#eslint) 
+JavaScript | Cucumber | [JUnit formatter](https://github.com/cucumber/cucumber-js/blob/main/docs/formatters.md#junit) | [example]({{site.baseurl}}/collect-test-data/#cucumber-for-node) 
 Ruby | RSpec | [rspec_junit_formatter](https://rubygems.org/gems/rspec_junit_formatter/versions/0.2.3) | [example]({{site.baseurl}}/collect-test-data/#rspec)
 Ruby | Minitest | [minitest-ci](https://rubygems.org/gems/minitest-ci) | [example]({{site.baseurl}}/collect-test-data/#minitest)
 --- | Cucumber | built-in | [example]({{site.baseurl}}/collect-test-data/#cucumber)
@@ -366,6 +368,24 @@ A working `.circleci/config.yml` test section might look like this:
           command: |
             mkdir -p ~/reports
             eslint ./src/ --format junit --output-file ~/reports/eslint.xml
+          when: always
+      - store_test_results:
+          path: ~/reports
+```
+
+### Cucumber for Node.js
+{: #cucumber-for-node }
+
+To output JUnit tests with the [cucumber-js](https://github.com/cucumber/cucumber-js) test runner you can use the [JUnit formatter](https://github.com/cucumber/cucumber-js/blob/main/docs/formatters.md#junit)
+
+A working `.circleci/config.yml` test section might look like this:
+
+```yml
+    steps:
+      - run:
+          command: |
+            mkdir -p ~/reports
+            cucumber-js --format junit:~/reports/cucumber.xml
           when: always
       - store_test_results:
           path: ~/reports
